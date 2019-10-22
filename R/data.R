@@ -151,7 +151,7 @@
 #'   \item{DATETIME}{Datetime}
 #'   \item{TIMEPOINT}{Timepoint}
 #' }
-"df_extra_times_datetimes"
+"df_extra_times_datetime"
 
 
 #' An extra times metabolite data set to be used with EVID=4.
