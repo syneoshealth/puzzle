@@ -326,7 +326,7 @@
 #'   \item{TIME}{Time, in hours}
 #'   \item{DV}{Response, ng/mL}
 #' }
-"df_pk_response1"
+"df_pd_response1"
 
 #' A pharmacodynamic data set.
 #'
@@ -338,7 +338,7 @@
 #'   \item{TIME}{Time, in hours}
 #'   \item{DV}{Response, seconds}
 #' }
-"df_pk_response2"
+"df_pd_response2"
 
 #' A pharmacodynamic data set.
 #'
@@ -350,4 +350,4 @@
 #'   \item{TIME}{Time, in hours}
 #'   \item{DV}{Response, in hours}
 #' }
-"df_pk_response3"
+"df_pd_response3"
