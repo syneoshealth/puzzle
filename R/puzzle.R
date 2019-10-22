@@ -16,20 +16,23 @@
 #' @param arrange define how the columns should be arranged
 #' @param optionalcolumns define optional columns
 #' @param initialindex define the lower category of categorical covariates
-#' @param coercion
-#' @param fillcolumns
-#' @param nocoercioncolumns
-#' @param norepeatcolumns
-#' @param na.strings
-#' @param datetimeformat
-#' @param timezone
-#' @param ignore
-#' @param missingvalues
-#' @param verbose
+#' @param coercion define name for coercion file
+#' @param fillcolumns define columns to be filled
+#' @param nocoercioncolumns define columns to be dropped from the coercion file
+#' @param norepeatcolumns define columns not to be repeated
+#' @param na.strings define value for na
+#' @param datetimeformat define format for date times
+#' @param timezone define timezone
+#' @param ignore define ignore value
+#' @param missingvalues define missing value
+#' @param verbose define verbose
 #' @param parallel define parallel zero + first order absorption
 #'
 #' @return a pharmacometrics ready data set
 #' @export
+#' 
+#' importFrom("stats", "as.formula", "setNames","utils", "head", "read.csv", "tail", "write.csv")
+#' 
 #' @examples
 #' nm = list(pk = list(parent=as.data.frame(puzzle::df_pk_start)),
 #' dose=as.data.frame(puzzle::df_dose_start),
