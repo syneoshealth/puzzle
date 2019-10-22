@@ -238,7 +238,7 @@ puzzle = function(directory=NULL,
     if (!is.null(extratimes$name) && nchar(extratimes$name)>0 && file.exists(file.path(directory,extratimes$name))) {
       extratimes$data=list()
       if (tolower(file.ext(extratimes$name))=="csv") {
-        extratimes$data[[1]]=read.csv(file=file.path(directory,extratimes$name), na.strings=missingvalues)
+        extratimes$data[[1]]=utils::read.csv(file=file.path(directory,extratimes$name), na.strings=missingvalues)
         names(extratimes$data)="pkpd"
       } else {
         extratimes$sheetnames = readxl::excel_sheets(path=file.path(directory,extratimes$name))
