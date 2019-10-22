@@ -116,7 +116,7 @@ puzzle = function(directory=NULL,
 
   compute.time = function (df,dose) {
     if ("DATETIME" %in% names(df) & "DATETIME" %in% names(dose)) {
-      df=join(df,ddply(dose,~ID,summarise,FIRSTDOSEDATETIME=min(DATETIME)),by="ID")
+      df=plyr::join(df,plyr::ddply(dose,~ID,plyr::summarise,FIRSTDOSEDATETIME=min(DATETIME)),by="ID")
       if ("TIME" %in% names(df)) {
         df$TIME[is.na(df$TIME)]=as.numeric(difftime(df$DATETIME[is.na(df$TIME)],df$FIRSTDOSEDATETIME[is.na(df$TIME)],units=timeunits,tz=timezone))
       } else {
@@ -168,7 +168,7 @@ puzzle = function(directory=NULL,
   write.coercion.comments = function(df,file,sep=if ("sep" %in% names(coercion)) coercion$sep else ",") {
     fileConn=file(file)
     df$NUMCHAR=paste0(df$NUM,"=",df$CHAR)
-    df=dcast(df,VAR~NUM,value.var="NUMCHAR")
+    df=reshape2::dcast(df,VAR~NUM,value.var="NUMCHAR")
     lines=c()
     for (i in seq_len(nrow(df))) {
       lines=c(lines,paste0(df[i,1], ": ", paste(df[i,-1][!is.na(df[i,-1])],collapse=paste0(sep," "))))
