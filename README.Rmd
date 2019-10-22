@@ -1,0 +1,52 @@
+---
+output: github_document
+always_allow_html: true
+---
+
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.path = "man/figures/README-",
+  out.width = "100%"
+)
+```
+
+# puzzle
+
+<!-- badges: start -->
+<!-- badges: end -->
+
+The goal of puzzle is assembling pharmacometric ready data sets from tabulated files.
+
+## Installation
+
+You can install the released version of puzzle from [CRAN](https://CRAN.R-project.org) with:
+
+``` r
+install.packages("puzzle")
+```
+
+## Example
+
+This is a basic example which shows you how to solve a common problem:
+
+```{r example}
+library(puzzle)
+nm = list(pk = list(parent=as.data.frame(puzzle::df_pk_start)),
+dose=as.data.frame(puzzle::df_dose_start),
+cov=as.data.frame(puzzle::df_cov_start))
+df = puzzle(directory=file.path(getwd()),
+        order=c(0),
+        pk=list(data=nm$pk),
+        dose=list(data=nm$dose),
+        cov=list(data=nm$cov))
+```
+
+If you run the R code showed above you will have a pharmacometrics ready data set as presented below:
+
+```{r df}
+DT::datatable(df)
+```

@@ -1,0 +1,26 @@
+Package: puzzle
+Type: Package
+Title: Assembling Pharmacometrics Data Sets
+Version: 0.1.0
+Authors@R: c(
+    person(c("Olivier"), "Barriere", role = "aut"),
+    person(c("Mario"), "Gonzalez Sales", role = c("aut", "cre"), email = "mario.gonzalezsales@syneoshealth.com")
+    )
+Maintainer: Mario Gonzalez Sales <mario.gonzalezsales@syneoshealth.com>
+Description: Assembling pharmacometric ready data sets from tabulated files.
+License: GPL-3
+Encoding: UTF-8
+LazyData: true
+Imports:
+    lubridate,
+    readxl,
+    reshape,
+    reshape2,
+    sqldf,
+    plyr,
+    dplyr
+Suggests:
+    rmarkdown,
+    knitr,
+    devtools
+RoxygenNote: 6.1.1
