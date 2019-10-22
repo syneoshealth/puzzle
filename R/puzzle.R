@@ -133,7 +133,7 @@ puzzle = function(directory=NULL,
     if (!"EVID" %in% names(df)) df$EVID=0
     df$EXTRATIME=0
     if (!is.null(times)) {
-      df2=setNames(as.data.frame(times[rep(1:nrow(times),times=length(unique(df$ID))),]),names(times))
+      df2=stats::setNames(as.data.frame(times[rep(1:nrow(times),times=length(unique(df$ID))),]),names(times))
       if (!"ID" %in% names(times)) df2$ID=rep(unique(df$ID),each=nrow(times))
       df2=df2[!duplicated(rbind(df[,names(df2)],df2))[(nrow(df)+1):(nrow(df)+nrow(df2))],]
 
@@ -159,7 +159,7 @@ puzzle = function(directory=NULL,
         message((paste0("Automatic coercion to numeric for ", name, "\n",
                         paste(paste(lvl[,1],lvl[,2],sep="="),collapse="\n"))))
         df[,name]=as.numeric(df[,name])+initialindex-1
-        if (!is.null(coercion$data)) coercion$data <<- rbind(coercion$data,data.frame(VAR=name,setNames(lvl,c("NUM","CHAR"))))
+        if (!is.null(coercion$data)) coercion$data <<- rbind(coercion$data,data.frame(VAR=name,stats::setNames(lvl,c("NUM","CHAR"))))
       }
     }
     return(df)
@@ -198,11 +198,11 @@ puzzle = function(directory=NULL,
     pk$data=list()
     if (tolower(file.ext(pk$name))=="csv") {
       pk$sheetnames=file.name(pk$name)
-      pk$data[[1]]=read.csv(file=file.path(directory,pk$name), na.strings=missingvalues)
+      pk$data[[1]]=utils::read.csv(file=file.path(directory,pk$name), na.strings=missingvalues)
     } else {
-      pk$sheetnames = excel_sheets(path=file.path(directory,pk$name))
+      pk$sheetnames = readxl::excel_sheets(path=file.path(directory,pk$name))
       for (i in seq_along(pk$sheetnames)) {
-        pk$data[[i]]=as.data.frame(read_excel(path=file.path(directory,pk$name),sheet=i))
+        pk$data[[i]]=as.data.frame(readxl::read_excel(path=file.path(directory,pk$name),sheet=i))
       }
     }
   } else {
@@ -210,11 +210,11 @@ puzzle = function(directory=NULL,
   }
   # dose
   if (is.null(dose$data)) {
-    dose$data=read.csv(file=file.path(directory,dose$name), na.strings=missingvalues)
+    dose$data=utils::read.csv(file=file.path(directory,dose$name), na.strings=missingvalues)
   }
   # cov
   if (is.null(cov$data)) {
-    if (!is.null(cov$name) && nchar(cov$name)>0 && file.exists(file.path(directory,cov$name))) cov$data=read.csv(file=file.path(directory,cov$name), na.strings=missingvalues)
+    if (!is.null(cov$name) && nchar(cov$name)>0 && file.exists(file.path(directory,cov$name))) cov$data=utils::read.csv(file=file.path(directory,cov$name), na.strings=missingvalues)
   }
   # pd
   if (is.null(pd$data)) {
@@ -222,11 +222,11 @@ puzzle = function(directory=NULL,
       pd$data=list()
       if (tolower(file.ext(pd$name))=="csv") {
         pd$sheetnames=file.name(pd$name)
-        pd$data[[1]]=read.csv(file=file.path(directory,pd$name), na.strings=missingvalues)
+        pd$data[[1]]=utils::read.csv(file=file.path(directory,pd$name), na.strings=missingvalues)
       } else {
-        pd$sheetnames = excel_sheets(path=file.path(directory,pd$name))
+        pd$sheetnames = readxl::excel_sheets(path=file.path(directory,pd$name))
         for (i in seq_along(pd$sheetnames)) {
-          pd$data[[i]]=as.data.frame(read_excel(path=file.path(directory,pd$name),sheet=i))
+          pd$data[[i]]=as.data.frame(readxl::read_excel(path=file.path(directory,pd$name),sheet=i))
         }
       }
     }
@@ -241,11 +241,11 @@ puzzle = function(directory=NULL,
         extratimes$data[[1]]=read.csv(file=file.path(directory,extratimes$name), na.strings=missingvalues)
         names(extratimes$data)="pkpd"
       } else {
-        extratimes$sheetnames = excel_sheets(path=file.path(directory,extratimes$name))
+        extratimes$sheetnames = readxl::excel_sheets(path=file.path(directory,extratimes$name))
         for (i in seq_along(extratimes$sheetnames)) {
-          extratimes$data[[i]]=as.data.frame(read_excel(path=file.path(directory,extratimes$name),sheet=i))
+          extratimes$data[[i]]=as.data.frame(readxl::read_excel(path=file.path(directory,extratimes$name),sheet=i))
         }
-        names(extratimes$data)=excel_sheets(path=file.path(directory,extratimes$name))
+        names(extratimes$data)=readxl::excel_sheets(path=file.path(directory,extratimes$name))
       }
     }
   }
@@ -284,7 +284,7 @@ puzzle = function(directory=NULL,
   # cov
   if (!is.null(cov$data)) {
     if (!"TIME" %in% names(cov$data)) cov$data$TIME=NA
-    if (!"VARIABLE" %in% names(cov$data)) cov$data=rename(melt(cov$data,id.vars=c("ID","TIME",optionalcolumns)[c("ID","TIME",optionalcolumns) %in% names(cov$data)]),c("variable"="VARIABLE","value"="VALUE"))
+    if (!"VARIABLE" %in% names(cov$data)) cov$data=plyr::rename(reshape2::melt(cov$data,id.vars=c("ID","TIME",optionalcolumns)[c("ID","TIME",optionalcolumns) %in% names(cov$data)]),c("variable"="VARIABLE","value"="VALUE"))
     covcolumns=names(cov$data)[names(cov$data) %in% c("ID","TIME",optionalcolumns) & !names(cov$data) %in% c("VARIABLE","VALUE")]
     cov$data=convert.datetime(cov$data)
     cov$data=compute.time(cov$data,dose$data)
@@ -353,9 +353,9 @@ puzzle = function(directory=NULL,
     dose$data$CMT=1
     nm$data$CMT=nm$data$CMT+1
   } else if (length(order)==2 && all(order==c(0,0))) {
-    dose$data=expand.grid.df(dose$data,data.frame(CMT=c(1,1)))
+    dose$data=reshape::expand.grid.df(dose$data,data.frame(CMT=c(1,1)))
   } else if (length(order)==2 && (all(order==c(0,1)) | all(order==c(1,0)))) {
-    dose$data=expand.grid.df(dose$data,data.frame(CMT=c(1,2)))
+    dose$data=reshape::expand.grid.df(dose$data,data.frame(CMT=c(1,2)))
     if (is.null(RATE)) {
       RATE="RATE"
       dose$data$RATE[dose$data$CMT==1]=0
@@ -363,17 +363,17 @@ puzzle = function(directory=NULL,
     dose$data$RATE[dose$data$CMT==2]=-2
     nm$data$CMT=nm$data$CMT+1
   } else if (length(order)==2 && all(order==c(1,1))) {
-    dose$data=expand.grid.df(dose$data,data.frame(CMT=c(1,2)))
+    dose$data=reshape::expand.grid.df(dose$data,data.frame(CMT=c(1,2)))
     nm$data$CMT=nm$data$CMT+2
   }
 
   # Coercion
   nm$sheetnames=c(pk$sheetnames,pd$sheetnames)
   nm$cmts=unique(nm$data$CMT)
-  lvl=data.frame(tail(nm$cmts,length(nm$sheetnames)),nm$sheetnames)
+  lvl=data.frame(utils::tail(nm$cmts,length(nm$sheetnames)),nm$sheetnames)
   message((paste0("Automatic coercion to numeric for CMT\n",
                   paste(paste(lvl[,1],lvl[,2],sep="="),collapse="\n"))))
-  if (!is.null(coercion$name)) coercion$data=data.frame(VAR="CMT",setNames(lvl,c("NUM","CHAR")))
+  if (!is.null(coercion$name)) coercion$data=data.frame(VAR="CMT",stats::setNames(lvl,c("NUM","CHAR")))
 
   # NM+DOSE
   nm$data=rbinddiff(nm$data,dose$data)
@@ -431,7 +431,7 @@ puzzle = function(directory=NULL,
   nm$data$TAD=nm$data$TIME-nm$data$DOSETIME
 
   # DOSETIME and PDOSETIME http://www.cognigencorp.com/nonmem/nm/99dec212004.html
-  nm$data=dplyr::arrange(plyr::ddply(nm$data,~ID,plyr::mutate,PDOSETIME=c(NA,head(DOSETIME,-1)),SORTINDEX=SORTINDEX),SORTINDEX)
+  nm$data=dplyr::arrange(plyr::ddply(nm$data,~ID,plyr::mutate,PDOSETIME=c(NA,utils::head(DOSETIME,-1)),SORTINDEX=SORTINDEX),SORTINDEX)
   nm$data$PDOSETIME[nm$data$EVID==4]=NA
   nm$data$PDOSETIME[is.na(nm$data$PDOSETIME)]=nm$data$DOSETIME[is.na(nm$data$PDOSETIME)]
 
@@ -475,14 +475,14 @@ puzzle = function(directory=NULL,
     for (variable in unique(cov$data$VARIABLE)) {
       if (verbose) cat(paste0(variable," ",nrow(nmdata), " -> "))
       if (variable %in% names(nmdata)) nmdata[,variable]=NULL
-      covdata=reshape2::dcast(as.formula(paste0(paste(c(sqlcovcolumns,"TIME"),collapse=" + ")," ~ VARIABLE")), data=subset(cov$data,VARIABLE==variable), value.var = "VALUE")
+      covdata=reshape2::dcast(stats::as.formula(paste0(paste(c(sqlcovcolumns,"TIME"),collapse=" + ")," ~ VARIABLE")), data=subset(cov$data,VARIABLE==variable), value.var = "VALUE")
       if (all(is.na(covdata$TIME))) {
         nmdata=plyr::join(nmdata,covdata,by=sqlcovcolumns[apply(covdata[sqlcovcolumns]!="%",2,any)])
         #nmdata=sqldf(paste0("SELECT * FROM nmdata LEFT JOIN covdata ON ",paste(paste0("(nmdata.", sqlcovcolumns[covcolumns!="TIME"], " LIKE covdata.", sqlcovcolumns[covcolumns!="TIME"], ")"),collapse=" AND ")))
       } else {
         nmdata[,sqlcovcolumns[covcolumns!="TIME"]][is.na(nmdata[,sqlcovcolumns[covcolumns!="TIME"]])]="NA"
         #nmdata=join(nmdata,covdata,by=sqlcovcolumns[apply(covdata[sqlcovcolumns]!="%",2,any)])
-        nmdata=sqldf(paste0("SELECT * FROM nmdata LEFT JOIN covdata ON ",
+        nmdata=sqldf::sqldf(paste0("SELECT * FROM nmdata LEFT JOIN covdata ON ",
                             paste(paste0("(nmdata.", sqlcovcolumns[covcolumns!="TIME"], " LIKE covdata.", sqlcovcolumns[covcolumns!="TIME"], ")"),collapse=" AND "),
                             " AND (nmdata.SQL_TIME LIKE covdata.SQL_TIME OR nmdata.TIME = (select min(TIME) from nmdata where (nmdata.SQL_ID == covdata.SQL_ID and TIME >= covdata.TIME)))"))
       }
@@ -523,7 +523,7 @@ puzzle = function(directory=NULL,
 
   if (!is.null(nm$name)) {
     ## Write csv
-    write.csv(nm$data, file=file.path(directory,nm$name),row.names=F,quote=F,na=missingvalues)
+    utils::write.csv(nm$data, file=file.path(directory,nm$name),row.names=F,quote=F,na=missingvalues)
   } else {
     ## Return
     return(nm$data)
