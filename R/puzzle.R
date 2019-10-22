@@ -31,8 +31,6 @@
 #' @return a pharmacometrics ready data set
 #' @export
 #' 
-#' @importFrom stats as.formula setNames
-#' @importFrom utils head read.csv tail write.csv
 #' 
 #' @examples
 #' nm = list(pk = list(parent=as.data.frame(puzzle::df_pk_start)),
