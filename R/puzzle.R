@@ -68,6 +68,8 @@ puzzle = function(directory=NULL,
 
   options(warn = -1)
 
+  # Make global variables
+  globalVariables(c("DATETIME", "ID", "TIME","DATASOURCE", "BLQ0", "DV"))
   # Additional functions
   repeat.before = function(x) {
     ind = which(!is.na(x))
