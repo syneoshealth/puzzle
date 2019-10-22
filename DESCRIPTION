@@ -14,7 +14,6 @@ LazyData: true
 Imports:
     utils,
     stats,
-    lubridate,
     readxl,
     reshape,
     reshape2,
