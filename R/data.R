@@ -199,7 +199,6 @@
 #'   \item{TIMEPOINT}{Timepoint}
 #'   \item{TIME}{Time, in hours}
 #'   \item{DV}{Drug concentration, in mg/L}
-#'   \item{TRT}{Treatment label}
 #'   \item{TIMEDAY}{Timeday}
 #'   \item{DAY}{Day of adminsitration}
 #' }
@@ -216,7 +215,6 @@
 #'   \item{TIMEPOINT}{Timepoint}
 #'   \item{TIME}{Time, in hours}
 #'   \item{DV}{Drug concentration, in mg/L}
-#'   \item{TRT}{Treatment label}
 #'   \item{TIMEDAY}{Timeday}
 #'   \item{DAY}{Day of adminsitration}
 #' }
