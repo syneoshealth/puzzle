@@ -51,7 +51,6 @@
 #' }
 "df_cov_time_dependent_start"
 
-
 #' A dose data set.
 #'
 #' A dataset containing dose information.
@@ -153,14 +152,13 @@
 #' }
 "df_extra_times_datetime"
 
-
 #' An extra times metabolite data set to be used with EVID=4.
 #'
 #' A dataset containing extra times for an hypothetical metabolite.
 #'
 #' @format A data frame with 770 rows and 3 variable:
 #' \describe{
-#'   \item{ID}{Individual}
+#'   \item{PERIOD}{Period}
 #'   \item{TIMEPOINT}{Timepoint}
 #'   \item{TIME}{Time, in hours}
 #' }
@@ -172,7 +170,7 @@
 #'
 #' @format A data frame with 770 rows and 3 variable:
 #' \describe{
-#'   \item{ID}{Individual}
+#'   \item{PERIOD}{Period}
 #'   \item{TIMEPOINT}{Timepoint}
 #'   \item{TIME}{Time, in hours}
 #' }
@@ -185,8 +183,8 @@
 #' @format A data frame with 1040 rows and 3 variable:
 #' \describe{
 #'   \item{ID}{Individual}
-#'   \item{TIMEPOINT}{Timepoint}
 #'   \item{TIME}{Time, in hours}
+#'   \item{TIMEPOINT}{Timepoint}
 #' }
 "df_extra_times_time"
 
@@ -228,7 +226,7 @@
 #'
 #' A dataset containing pharmacodynamic observations.
 #'
-#' @format A data frame with 1040 rows and 3 variable:
+#' @format A tibble with 6 rows and 3 variable:
 #' \describe{
 #'   \item{ID}{Individual}
 #'   \item{TIME}{Time, in hours}
@@ -240,14 +238,13 @@
 #'
 #' A dataset containing pharmacokinetic information.
 #'
-#' @format A data frame with 132 rows and 4 variable:
+#' @format A tibble with 12 rows and 3 variable:
 #' \describe{
 #'   \item{ID}{Individual}
-#'   \item{TIMEPOINT}{Timepoint}
 #'   \item{TIME}{Time, in hours}
 #'   \item{DV}{Response, ng/mL}
 #' }
-"df_pd_start"
+"df_pk_start"
 
 #' A pharmacokinetic data set example in datetime format.
 #'
@@ -303,6 +300,19 @@
 #'   \item{DV}{Drug concentration, ng/mL}
 #' }
 "df_pk_parent"
+
+#' A pharmacokinetic data set.
+#'
+#' A dataset containing pharmacokinetic information.
+#'
+#' @format A tibble with 132 rows and 4 variable:
+#' \describe{
+#'   \item{ID}{Individual}
+#'   \item{TIMEPOINT}{Timepoint}
+#'   \item{TIME}{Time, in hours}
+#'   \item{DV}{Drug concentration, ng/mL}
+#' }
+"df_pk"
 
 #' An starting pharmacokinetic data set.
 #'
