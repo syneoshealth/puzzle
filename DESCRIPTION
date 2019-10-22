@@ -24,3 +24,5 @@ Suggests:
     knitr,
     devtools
 RoxygenNote: 6.1.1
+URL: https://github.com/syneoshealth/puzzle
+BugReports: https://github.com/syneoshealth/puzzle/issues
