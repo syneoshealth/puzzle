@@ -73,125 +73,125 @@ puzzle = function(directory=NULL,
   Do you need help? Please visit: https://github.com/syneoshealth/puzzle")
   }
   
-  # repeat.before = function(x) {
-  #   ind = which(!is.na(x))
-  #   if(is.na(x[1]))
-  #     ind = c(1,ind)
-  #   rep(x[ind], times = diff(
-  #     c(ind, length(x) + 1) ))
-  # }
-# 
-#   repeat.before.id = function(df) {
-#     for (id in unique(df$ID)) {
-#       df[df$ID==id,2]=repeat.before(df[df$ID==id,2])
-#     }
-#     return(df[,2])
-#   }
-# 
-#   rbinddiff = function(...) {
-#     dots=list(...)
-# 
-#     if (length(dots)==0) return(NULL)
-# 
-#     df=dots[[1]]
-#     for (i in 1+seq_len(length(dots)-1)) {
-#       df=rbinddiff2(df,dots[[i]])
-#     }
-#     return(df)
-#   }
-# 
-#   rbinddiff2 = function(a,b) {
-#     notina=setdiff(names(b),names(a))
-#     notinb=setdiff(names(a),names(b))
-#     if (nrow(a)>0) a[,notina]=NA
-#     if (nrow(b)>0) b[,notinb]=NA
-# 
-#     rbind(a,b)
-#   }
-# 
-#   convert.datetime = function(df) {
-#     if (!"DATETIME" %in% names(df)) {
-#       df$TIME=as.numeric(df$TIME)
-#     } else {
-#       df$DATETIME=as.POSIXct(strptime(df$DATETIME,format=datetimeformat,tz=timezone),tz=timezone)
-#     }
-#     return(df)
-#   }
-# 
-#   compute.time = function (df,dose) {
-#     if ("DATETIME" %in% names(df) & "DATETIME" %in% names(dose)) {
-#       df=plyr::join(df,plyr::ddply(dose,~ID,plyr::summarise,FIRSTDOSEDATETIME=min(DATETIME)),by="ID")
-#       if ("TIME" %in% names(df)) {
-#         df$TIME[is.na(df$TIME)]=as.numeric(difftime(df$DATETIME[is.na(df$TIME)],df$FIRSTDOSEDATETIME[is.na(df$TIME)],units=timeunits,tz=timezone))
-#       } else {
-#         df$TIME=as.numeric(difftime(df$DATETIME,df$FIRSTDOSEDATETIME,units=timeunits,tz=timezone))
-#       }
-#       df$FIRSTDOSEDATETIME=NULL
-#     } else {
-#       df$DATETIME=NA
-#     }
-#     return(df)
-#   }
-# 
-#   add.times = function(df,times) {
-#     if (!"EVID" %in% names(df)) df$EVID=0
-#     df$EXTRATIME=0
-#     if (!is.null(times)) {
-#       df2=stats::setNames(as.data.frame(times[rep(1:nrow(times),times=length(unique(df$ID))),]),names(times))
-#       if (!"ID" %in% names(times)) df2$ID=rep(unique(df$ID),each=nrow(times))
-#       df2=df2[!duplicated(rbind(df[,names(df2)],df2))[(nrow(df)+1):(nrow(df)+nrow(df2))],]
-# 
-#       if (nrow(df2)>0) {
-#         if (!"EVID" %in% names(df2)) df2$EVID=2
-#         df2$EXTRATIME=1
-#         df=rbinddiff(df,df2)
-#       }
-#       df=arrange(df,ID,TIME)
-#     }
-#     return(df)
-#   }
-# 
-#   convert.to.numeric = function (df,initialindex,na.strings) {
-#     for (name in names(df)) {
-#       if (class(df[,name])!="character") df[,name]=as.character(df[,name])
-#       df[,name][df[,name] %in% na.strings]=NA
-#       if (all(!(ifelse(is.na(df[,name]), NA, TRUE) & suppressWarnings(is.na(as.numeric(df[,name])))), na.rm=T)) {
-#         df[,name]=as.numeric(df[,name])
-#       } else {
-#         df[,name]=as.factor(df[,name])
-#         lvl=data.frame(seq_along(levels(df[,name]))+initialindex-1,levels(df[,name]))
-#         message((paste0("Automatic coercion to numeric for ", name, "\n",
-#                         paste(paste(lvl[,1],lvl[,2],sep="="),collapse="\n"))))
-#         df[,name]=as.numeric(df[,name])+initialindex-1
-#         if (!is.null(coercion$data)) coercion$data <<- rbind(coercion$data,data.frame(VAR=name,stats::setNames(lvl,c("NUM","CHAR"))))
-#       }
-#     }
-#     return(df)
-#   }
-# 
-#   write.coercion.comments = function(df,file,sep=if ("sep" %in% names(coercion)) coercion$sep else ",") {
-#     fileConn=file(file)
-#     df$NUMCHAR=paste0(df$NUM,"=",df$CHAR)
-#     df=reshape2::dcast(df,VAR~NUM,value.var="NUMCHAR")
-#     lines=c()
-#     for (i in seq_len(nrow(df))) {
-#       lines=c(lines,paste0(df[i,1], ": ", paste(df[i,-1][!is.na(df[i,-1])],collapse=paste0(sep," "))))
-#     }
-#     writeLines(lines, fileConn)
-#     close(fileConn)
-#   }
-# 
-#   file.ext = function(x) {
-#     ext=regmatches(x, regexec("\\.([^\\.]+$)",x))[[1]][2]
-#     if (is.na(ext)) ext=""
-#     return(ext)
-#   }
-#   
-#   file.name = function(x) {
-#     name=regmatches(x, regexec("(.*)\\.[^\\.]+$",x))[[1]][2]
-#     if (is.na(name)) name=x
-#     return(name)
-#   }
+  repeat.before = function(x) {
+    ind = which(!is.na(x))
+    if(is.na(x[1]))
+      ind = c(1,ind)
+    rep(x[ind], times = diff(
+      c(ind, length(x) + 1) ))
+  }
+
+  repeat.before.id = function(df) {
+    for (id in unique(df$ID)) {
+      df[df$ID==id,2]=repeat.before(df[df$ID==id,2])
+    }
+    return(df[,2])
+  }
+
+  rbinddiff = function(...) {
+    dots=list(...)
+
+    if (length(dots)==0) return(NULL)
+
+    df=dots[[1]]
+    for (i in 1+seq_len(length(dots)-1)) {
+      df=rbinddiff2(df,dots[[i]])
+    }
+    return(df)
+  }
+
+  rbinddiff2 = function(a,b) {
+    notina=setdiff(names(b),names(a))
+    notinb=setdiff(names(a),names(b))
+    if (nrow(a)>0) a[,notina]=NA
+    if (nrow(b)>0) b[,notinb]=NA
+
+    rbind(a,b)
+  }
+
+  convert.datetime = function(df) {
+    if (!"DATETIME" %in% names(df)) {
+      df$TIME=as.numeric(df$TIME)
+    } else {
+      df$DATETIME=as.POSIXct(strptime(df$DATETIME,format=datetimeformat,tz=timezone),tz=timezone)
+    }
+    return(df)
+  }
+
+  compute.time = function (df,dose) {
+    if ("DATETIME" %in% names(df) & "DATETIME" %in% names(dose)) {
+      df=plyr::join(df,plyr::ddply(dose,~ID,plyr::summarise,FIRSTDOSEDATETIME=min(DATETIME)),by="ID")
+      if ("TIME" %in% names(df)) {
+        df$TIME[is.na(df$TIME)]=as.numeric(difftime(df$DATETIME[is.na(df$TIME)],df$FIRSTDOSEDATETIME[is.na(df$TIME)],units=timeunits,tz=timezone))
+      } else {
+        df$TIME=as.numeric(difftime(df$DATETIME,df$FIRSTDOSEDATETIME,units=timeunits,tz=timezone))
+      }
+      df$FIRSTDOSEDATETIME=NULL
+    } else {
+      df$DATETIME=NA
+    }
+    return(df)
+  }
+
+  add.times = function(df,times) {
+    if (!"EVID" %in% names(df)) df$EVID=0
+    df$EXTRATIME=0
+    if (!is.null(times)) {
+      df2=stats::setNames(as.data.frame(times[rep(1:nrow(times),times=length(unique(df$ID))),]),names(times))
+      if (!"ID" %in% names(times)) df2$ID=rep(unique(df$ID),each=nrow(times))
+      df2=df2[!duplicated(rbind(df[,names(df2)],df2))[(nrow(df)+1):(nrow(df)+nrow(df2))],]
+
+      if (nrow(df2)>0) {
+        if (!"EVID" %in% names(df2)) df2$EVID=2
+        df2$EXTRATIME=1
+        df=rbinddiff(df,df2)
+      }
+      df=arrange(df,ID,TIME)
+    }
+    return(df)
+  }
+
+  convert.to.numeric = function (df,initialindex,na.strings) {
+    for (name in names(df)) {
+      if (class(df[,name])!="character") df[,name]=as.character(df[,name])
+      df[,name][df[,name] %in% na.strings]=NA
+      if (all(!(ifelse(is.na(df[,name]), NA, TRUE) & suppressWarnings(is.na(as.numeric(df[,name])))), na.rm=T)) {
+        df[,name]=as.numeric(df[,name])
+      } else {
+        df[,name]=as.factor(df[,name])
+        lvl=data.frame(seq_along(levels(df[,name]))+initialindex-1,levels(df[,name]))
+        message((paste0("Automatic coercion to numeric for ", name, "\n",
+                        paste(paste(lvl[,1],lvl[,2],sep="="),collapse="\n"))))
+        df[,name]=as.numeric(df[,name])+initialindex-1
+        if (!is.null(coercion$data)) coercion$data <<- rbind(coercion$data,data.frame(VAR=name,stats::setNames(lvl,c("NUM","CHAR"))))
+      }
+    }
+    return(df)
+  }
+
+  write.coercion.comments = function(df,file,sep=if ("sep" %in% names(coercion)) coercion$sep else ",") {
+    fileConn=file(file)
+    df$NUMCHAR=paste0(df$NUM,"=",df$CHAR)
+    df=reshape2::dcast(df,VAR~NUM,value.var="NUMCHAR")
+    lines=c()
+    for (i in seq_len(nrow(df))) {
+      lines=c(lines,paste0(df[i,1], ": ", paste(df[i,-1][!is.na(df[i,-1])],collapse=paste0(sep," "))))
+    }
+    writeLines(lines, fileConn)
+    close(fileConn)
+  }
+
+  file.ext = function(x) {
+    ext=regmatches(x, regexec("\\.([^\\.]+$)",x))[[1]][2]
+    if (is.na(ext)) ext=""
+    return(ext)
+  }
+
+  file.name = function(x) {
+    name=regmatches(x, regexec("(.*)\\.[^\\.]+$",x))[[1]][2]
+    if (is.na(name)) name=x
+    return(name)
+  }
   
   if (is.null(directory)) directory="" 
 
