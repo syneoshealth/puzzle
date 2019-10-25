@@ -11,21 +11,6 @@
 #' }
 "df_cov"
 
-#' A covariate data set to be used with EVID=4.
-#'
-#' A dataset containing covariate information.
-#'
-#' @format A data frame with 119 rows and 6 variables:
-#' \describe{
-#'   \item{ID}{Individual}
-#'   \item{PERIOD}{Period}
-#'   \item{TIMEPOINT}{Timepoint, in hours}
-#'   \item{TIME}{Time, in hours}
-#'   \item{VARIABLE}{Variable}
-#'   \item{VALUE}{Value of the variable}
-#' }
-"df_cov_evid4"
-
 #' Starting covariate data set.
 #'
 #' A dataset containing covariate information.
