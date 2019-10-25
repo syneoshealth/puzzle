@@ -38,26 +38,7 @@ df = puzzle(directory=file.path(getwd()),
 #> 1=M
 ```
 
-If you run the R code showed above you will have a pharmacometrics ready data set as presented below:
-
-``` r
-library(knitr)
-library(kableExtra)
-library(tidyverse)
-#> -- Attaching packages ------------------------------------------------------------- tidyverse 1.2.1 --
-#> v ggplot2 3.2.1     v purrr   0.3.3
-#> v tibble  2.1.3     v dplyr   0.8.3
-#> v tidyr   1.0.0     v stringr 1.4.0
-#> v readr   1.3.1     v forcats 0.4.0
-#> -- Conflicts ---------------------------------------------------------------- tidyverse_conflicts() --
-#> x dplyr::filter()     masks stats::filter()
-#> x dplyr::group_rows() masks kableExtra::group_rows()
-#> x dplyr::lag()        masks stats::lag()
-df %>%
-  dplyr::select(1:4,8:15) %>% 
-  kable() %>%
-  kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive"))
-```
+A portion of the pharmacometrics ready data set obtained with the code showed above is presented below:
 
 <table class="table table-striped table-hover table-condensed table-responsive" style="margin-left: auto; margin-right: auto;">
 <thead>

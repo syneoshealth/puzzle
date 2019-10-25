@@ -45,9 +45,9 @@ df = puzzle(directory=file.path(getwd()),
         cov=list(data=nm$cov))
 ```
 
-If you run the R code showed above you will have a pharmacometrics ready data set as presented below:
+A portion of the pharmacometrics ready data set obtained with the code showed above is presented below:
 
-```{r df}
+```{r df, warning=F, error=F, message=F, echo=F}
 library(knitr)
 library(kableExtra)
 library(tidyverse)
