@@ -1,6 +1,6 @@
 Package: puzzle
 Type: Package
-Title: Assembling Pharmacometrics Data Sets
+Title: Assembling Pharmacometric Data Sets
 Version: 0.1.0
 Authors@R: c(
     person(c("Olivier"), "Barriere", role = "aut"),
