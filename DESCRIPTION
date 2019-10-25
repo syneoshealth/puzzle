@@ -11,7 +11,6 @@ Description: Assembling pharmacometric ready data sets from tabulated files.
 License: GPL-3
 Encoding: UTF-8
 LazyData: true
-Depends: RSQLite
 Imports:
     utils,
     stats,
@@ -21,7 +20,7 @@ Imports:
     sqldf,
     plyr,
     dplyr,
-    sqldf,
+    sqldf
 Suggests:
     rmarkdown,
     knitr,
