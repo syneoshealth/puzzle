@@ -67,7 +67,11 @@ puzzle = function(directory=NULL,
                   verbose=F) {
 
   options(warn = -1)
-
+  
+  if(is.null(pk) & is.null(pd)){
+    stop("Please define puzzle arguments. Do you need help? Pleave visit: https://github.com/syneoshealth/puzzle")
+  }
+  
   repeat.before = function(x) {
     ind = which(!is.na(x))
     if(is.na(x[1]))
@@ -188,10 +192,6 @@ puzzle = function(directory=NULL,
     return(name)
   }
   
-  if(is.null(pk) & is.null(pd)){
-    stop("Please define puzzle arguments. Do you need help? Pleave visit: https://github.com/syneoshealth/puzzle")
-  }
-
   if (is.null(directory)) directory="" 
 
   if (is.null(pk$data)) {
