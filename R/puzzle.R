@@ -69,8 +69,8 @@ puzzle = function(directory=NULL,
   options(warn = -1)
   
   if(missing(pk) & missing(pd) & missing(cov) & missing(dose)){
-    warning("Have you forgotten to define the arguments for puzzle()?. 
-             Do you need help? Please visit: https://github.com/syneoshealth/puzzle")
+    stop("Have you forgotten to define the arguments for puzzle()?. 
+          Do you need help? Please visit: https://github.com/syneoshealth/puzzle")
   }
   
   repeat.before = function(x) {
