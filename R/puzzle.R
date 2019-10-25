@@ -68,8 +68,8 @@ puzzle = function(directory=NULL,
 
   options(warn = -1)
   
-  if(is.null(pk) & is.null(pd)){
-    error("Please define puzzle arguments. Do you need help? Pleave visit: https://github.com/syneoshealth/puzzle")
+  if(missing(pk) & missing(pd)){
+    stop("Please define puzzle arguments. Do you need help? Pleave visit: https://github.com/syneoshealth/puzzle")
   }
   
   repeat.before = function(x) {
