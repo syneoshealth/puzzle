@@ -69,7 +69,7 @@ puzzle = function(directory=NULL,
   options(warn = -1)
   
   if(is.null(pk) & is.null(pd)){
-    stop("Please define puzzle arguments. Do you need help? Pleave visit: https://github.com/syneoshealth/puzzle")
+    error("Please define puzzle arguments. Do you need help? Pleave visit: https://github.com/syneoshealth/puzzle")
   }
   
   repeat.before = function(x) {
@@ -180,6 +180,17 @@ puzzle = function(directory=NULL,
     close(fileConn)
   }
 
+  file.ext = function(x) {
+    ext=regmatches(x, regexec("\\.([^\\.]+$)",x))[[1]][2]
+    if (is.na(ext)) ext=""
+    return(ext)
+  }
+  
+  file.name = function(x) {
+    name=regmatches(x, regexec("(.*)\\.[^\\.]+$",x))[[1]][2]
+    if (is.na(name)) name=x
+    return(name)
+  }
   
   if (is.null(directory)) directory="" 
 
