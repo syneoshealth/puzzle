@@ -19,8 +19,7 @@ Imports:
     reshape2,
     sqldf,
     plyr,
-    dplyr,
-    sqldf
+    dplyr
 Suggests:
     rmarkdown,
     knitr,
