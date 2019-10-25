@@ -41,10 +41,657 @@ df = puzzle(directory=file.path(getwd()),
 If you run the R code showed above you will have a pharmacometrics ready data set as presented below:
 
 ``` r
-DT::datatable(df)
+library(knitr)
+library(kableExtra)
+library(tidyverse)
+#> -- Attaching packages ------------------------------------------------------------- tidyverse 1.2.1 --
+#> v ggplot2 3.2.1     v purrr   0.3.3
+#> v tibble  2.1.3     v dplyr   0.8.3
+#> v tidyr   1.0.0     v stringr 1.4.0
+#> v readr   1.3.1     v forcats 0.4.0
+#> -- Conflicts ---------------------------------------------------------------- tidyverse_conflicts() --
+#> x dplyr::filter()     masks stats::filter()
+#> x dplyr::group_rows() masks kableExtra::group_rows()
+#> x dplyr::lag()        masks stats::lag()
+df %>%
+  dplyr::select(1:4,8:15) %>% 
+  kable() %>%
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive"))
 ```
 
-<!--html_preserve-->
-
-<script type="application/json" data-for="htmlwidget-2fc024c28eb19570b18d">{"x":{"filter":"none","data":[["1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16"],["","","","","","","","","","","","","","","",""],[1,1,1,1,1,1,1,1,2,2,2,2,2,2,2,2],[0,0,1,4,12,24,24,25,0,0,0.9,3.8,12.2,24,24,25.1],[0,0,1,4,12,0,0,1,0,0,0.9,3.8,12.2,0,0,1.1],[0,0,0,0,0,24,24,24,0,0,0,0,0,24,24,24],[0,0,0,0,0,0,24,24,0,0,0,0,0,0,24,24],[1,1,1,1,1,2,2,2,1,1,1,1,1,2,2,2],[100,null,null,null,null,200,null,null,100,null,null,null,null,200,null,null],[1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],[1,0,0,0,0,1,0,0,1,0,0,0,0,1,0,0],[null,0,10.8,7.6,2.3,null,0,24.2,null,0,7.3,4,1.1,null,0,14.1],[null,null,2.37954613413017,2.02814824729229,0.832909122935104,null,null,3.18635263316264,null,null,1.98787434815435,1.38629436111989,0.0953101798043249,null,null,2.64617479738412],[1,0,0,0,0,1,0,0,1,0,0,0,0,1,0,0],[77,77,77,77,77,77,77,77,82,82,82,82,82,82,82,82],[1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>C<\/th>\n      <th>ID<\/th>\n      <th>TIME<\/th>\n      <th>TAD<\/th>\n      <th>DOSETIME<\/th>\n      <th>PDOSETIME<\/th>\n      <th>NUMDOSE<\/th>\n      <th>AMT<\/th>\n      <th>CMT<\/th>\n      <th>EVID<\/th>\n      <th>DV<\/th>\n      <th>LDV<\/th>\n      <th>MDV<\/th>\n      <th>AGE<\/th>\n      <th>SEX<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"columnDefs":[{"className":"dt-right","targets":[2,3,4,5,6,7,8,9,10,11,12,13,14,15]},{"orderable":false,"targets":0}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
-<!--/html_preserve-->
+<table class="table table-striped table-hover table-condensed table-responsive" style="margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+C
+</th>
+<th style="text-align:right;">
+ID
+</th>
+<th style="text-align:right;">
+TIME
+</th>
+<th style="text-align:right;">
+TAD
+</th>
+<th style="text-align:right;">
+AMT
+</th>
+<th style="text-align:right;">
+CMT
+</th>
+<th style="text-align:right;">
+EVID
+</th>
+<th style="text-align:right;">
+DV
+</th>
+<th style="text-align:right;">
+LDV
+</th>
+<th style="text-align:right;">
+MDV
+</th>
+<th style="text-align:right;">
+AGE
+</th>
+<th style="text-align:right;">
+SEX
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+0.0
+</td>
+<td style="text-align:right;">
+0.0
+</td>
+<td style="text-align:right;">
+100
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+77
+</td>
+<td style="text-align:right;">
+1
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+0.0
+</td>
+<td style="text-align:right;">
+0.0
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0.0
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+77
+</td>
+<td style="text-align:right;">
+1
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+1.0
+</td>
+<td style="text-align:right;">
+1.0
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+10.8
+</td>
+<td style="text-align:right;">
+2.3795461
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+77
+</td>
+<td style="text-align:right;">
+1
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+4.0
+</td>
+<td style="text-align:right;">
+4.0
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+7.6
+</td>
+<td style="text-align:right;">
+2.0281482
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+77
+</td>
+<td style="text-align:right;">
+1
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+12.0
+</td>
+<td style="text-align:right;">
+12.0
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+2.3
+</td>
+<td style="text-align:right;">
+0.8329091
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+77
+</td>
+<td style="text-align:right;">
+1
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+24.0
+</td>
+<td style="text-align:right;">
+0.0
+</td>
+<td style="text-align:right;">
+200
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+77
+</td>
+<td style="text-align:right;">
+1
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+24.0
+</td>
+<td style="text-align:right;">
+0.0
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0.0
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+77
+</td>
+<td style="text-align:right;">
+1
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+25.0
+</td>
+<td style="text-align:right;">
+1.0
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+24.2
+</td>
+<td style="text-align:right;">
+3.1863526
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+77
+</td>
+<td style="text-align:right;">
+1
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+0.0
+</td>
+<td style="text-align:right;">
+0.0
+</td>
+<td style="text-align:right;">
+100
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+82
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+0.0
+</td>
+<td style="text-align:right;">
+0.0
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0.0
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+82
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+0.9
+</td>
+<td style="text-align:right;">
+0.9
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+7.3
+</td>
+<td style="text-align:right;">
+1.9878743
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+82
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+3.8
+</td>
+<td style="text-align:right;">
+3.8
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+4.0
+</td>
+<td style="text-align:right;">
+1.3862944
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+82
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+12.2
+</td>
+<td style="text-align:right;">
+12.2
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+1.1
+</td>
+<td style="text-align:right;">
+0.0953102
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+82
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+24.0
+</td>
+<td style="text-align:right;">
+0.0
+</td>
+<td style="text-align:right;">
+200
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+82
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+24.0
+</td>
+<td style="text-align:right;">
+0.0
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0.0
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+82
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+25.1
+</td>
+<td style="text-align:right;">
+1.1
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+14.1
+</td>
+<td style="text-align:right;">
+2.6461748
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+82
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+</tbody>
+</table>

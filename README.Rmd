@@ -48,5 +48,11 @@ df = puzzle(directory=file.path(getwd()),
 If you run the R code showed above you will have a pharmacometrics ready data set as presented below:
 
 ```{r df}
-DT::datatable(df)
+library(knitr)
+library(kableExtra)
+library(tidyverse)
+df %>%
+  dplyr::select(1:4,8:15) %>% 
+  kable() %>%
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive"))
 ```
