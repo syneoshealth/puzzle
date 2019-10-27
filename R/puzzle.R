@@ -177,6 +177,7 @@ puzzle = function(directory=NULL,
     for (i in seq_len(nrow(df))) {
       lines=c(lines,paste0(df[i,1], ": ", paste(df[i,-1][!is.na(df[i,-1])],collapse=paste0(sep," "))))
     }
+    #lines2 = c(lines,lubridate::now())
     writeLines(lines, fileConn)
     close(fileConn)
   }
@@ -494,8 +495,13 @@ puzzle = function(directory=NULL,
   namestoconvert=names(nm$data)[!(names(nm$data) %in% c("C",nocoercioncolumns)) & sapply(nm$data,class) %in% c("character","logical")]
   nm$data[,namestoconvert]=convert.to.numeric(nm$data[,namestoconvert,drop=F],initialindex,na.strings)
   if (!is.null(coercion$name)) write.coercion.comments(coercion$data, file=file.path(directory,coercion$name))
-
-  if (!is.null(nm$name)) {
+message("Assembling time: ",lubridate::now())
+message("Time zone: ", Sys.timezone())
+message("Number of individuals: ", length(unique(nm$data$ID)))
+df_test = as.data.frame(nm$data)
+df_obs = df_test %>% filter(MDV==0) 
+message("Number of observations: ", nrow(df_obs))
+if (!is.null(nm$name)) {
     utils::write.csv(nm$data, file=file.path(directory,nm$name),row.names=F,quote=F,na=missingvalues)
   } else {
     return(nm$data)
