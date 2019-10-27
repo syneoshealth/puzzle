@@ -501,6 +501,9 @@ message("Number of individuals: ", length(unique(nm$data$ID)))
 df_test = as.data.frame(nm$data)
 df_obs = df_test %>% filter(MDV==0) 
 message("Number of observations: ", nrow(df_obs))
+df_doses = df_test %>% filter(!is.na(AMT), !duplicated(AMT)) 
+doses = as.vector(df_doses$AMT)
+message("Dose levels: ", paste(shQuote(doses), collapse=", "))
 if (!is.null(nm$name)) {
     utils::write.csv(nm$data, file=file.path(directory,nm$name),row.names=F,quote=F,na=missingvalues)
   } else {
