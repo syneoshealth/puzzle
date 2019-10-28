@@ -29,8 +29,6 @@
 #' @param parallel define parallel zero + first order absorption
 #' @param username define person performing the assembling
 #' 
-#' @importFrom magrittr %>%
-#'
 #' @return a pharmacometrics ready data set
 #' @export
 #' 
@@ -182,7 +180,6 @@ puzzle = function(directory=NULL,
     for (i in seq_len(nrow(df))) {
       lines=c(lines,paste0(df[i,1], ": ", paste(df[i,-1][!is.na(df[i,-1])],collapse=paste0(sep," "))))
     }
-    #lines2 = c(lines,lubridate::now())
     writeLines(lines, fileConn)
     close(fileConn)
   }
@@ -504,9 +501,9 @@ puzzle = function(directory=NULL,
   message("Time zone: ", Sys.timezone())
   message("Number of individuals: ", length(unique(nm$data$ID)))
   df_test = as.data.frame(nm$data)
-  df_obs = df_test %>%  dplyr::filter(MDV==0) 
+  df_obs = dplyr::filter(df_test,MDV==0) 
   message("Number of observations: ", nrow(df_obs))
-  df_doses = df_test %>% filter(!is.na(AMT), !duplicated(AMT)) 
+  df_doses = filter(df_test, !is.na(AMT), !duplicated(AMT)) 
   doses = as.vector(df_doses$AMT)
   message("Dose levels: ", paste(shQuote(doses), collapse=", "))
   if(!is.null(username)){
