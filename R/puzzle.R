@@ -27,6 +27,7 @@
 #' @param missingvalues define missing value
 #' @param verbose define verbose
 #' @param parallel define parallel zero + first order absorption
+#' @param username define person performing the assembling
 #'
 #' @return a pharmacometrics ready data set
 #' @export
@@ -44,15 +45,15 @@
 #'
 puzzle = function(directory=NULL,
                   order,
-                 coercion=list(name=NULL,sep=","),
+                  coercion=list(name=NULL,sep=","),
                   optionalcolumns=NULL,
-                     pk=list(name=NULL,data=NULL),
+                  pk=list(name=NULL,data=NULL),
                   dose=list(name=NULL,data=NULL),
                   cov=list(name=NULL,data=NULL),
                   pd=list(name=NULL,data=NULL),
                   extratimes=list(name=NULL,data=NULL),
                   nm=list(name=NULL),
-                fillcolumns=NULL,
+                  fillcolumns=NULL,
                   nocoercioncolumns=NULL,
                   norepeatcolumns=NULL,
                   initialindex=0,
@@ -64,8 +65,10 @@ puzzle = function(directory=NULL,
                   ignore="C",
                   missingvalues=".",
                   parallel=T,
-                  verbose=F) {
-
+                  verbose=F,
+                  username=NULL
+) {
+  
   options(warn = -1)
   
   if(missing(pk) & missing(pd) & missing(cov) & missing(dose)){
@@ -80,35 +83,35 @@ puzzle = function(directory=NULL,
     rep(x[ind], times = diff(
       c(ind, length(x) + 1) ))
   }
-
+  
   repeat.before.id = function(df) {
     for (id in unique(df$ID)) {
       df[df$ID==id,2]=repeat.before(df[df$ID==id,2])
     }
     return(df[,2])
   }
-
+  
   rbinddiff = function(...) {
     dots=list(...)
-
+    
     if (length(dots)==0) return(NULL)
-
+    
     df=dots[[1]]
     for (i in 1+seq_len(length(dots)-1)) {
       df=rbinddiff2(df,dots[[i]])
     }
     return(df)
   }
-
+  
   rbinddiff2 = function(a,b) {
     notina=setdiff(names(b),names(a))
     notinb=setdiff(names(a),names(b))
     if (nrow(a)>0) a[,notina]=NA
     if (nrow(b)>0) b[,notinb]=NA
-
+    
     rbind(a,b)
   }
-
+  
   convert.datetime = function(df) {
     if (!"DATETIME" %in% names(df)) {
       df$TIME=as.numeric(df$TIME)
@@ -117,7 +120,7 @@ puzzle = function(directory=NULL,
     }
     return(df)
   }
-
+  
   compute.time = function (df,dose) {
     if ("DATETIME" %in% names(df) & "DATETIME" %in% names(dose)) {
       df=plyr::join(df,plyr::ddply(dose,~ID,plyr::summarise,FIRSTDOSEDATETIME=min(DATETIME)),by="ID")
@@ -132,7 +135,7 @@ puzzle = function(directory=NULL,
     }
     return(df)
   }
-
+  
   add.times = function(df,times) {
     if (!"EVID" %in% names(df)) df$EVID=0
     df$EXTRATIME=0
@@ -140,7 +143,7 @@ puzzle = function(directory=NULL,
       df2=stats::setNames(as.data.frame(times[rep(1:nrow(times),times=length(unique(df$ID))),]),names(times))
       if (!"ID" %in% names(times)) df2$ID=rep(unique(df$ID),each=nrow(times))
       df2=df2[!duplicated(rbind(df[,names(df2)],df2))[(nrow(df)+1):(nrow(df)+nrow(df2))],]
-
+      
       if (nrow(df2)>0) {
         if (!"EVID" %in% names(df2)) df2$EVID=2
         df2$EXTRATIME=1
@@ -150,7 +153,7 @@ puzzle = function(directory=NULL,
     }
     return(df)
   }
-
+  
   convert.to.numeric = function (df,initialindex,na.strings) {
     for (name in names(df)) {
       if (class(df[,name])!="character") df[,name]=as.character(df[,name])
@@ -168,7 +171,7 @@ puzzle = function(directory=NULL,
     }
     return(df)
   }
-
+  
   write.coercion.comments = function(df,file,sep=if ("sep" %in% names(coercion)) coercion$sep else ",") {
     fileConn=file(file)
     df$NUMCHAR=paste0(df$NUM,"=",df$CHAR)
@@ -181,13 +184,13 @@ puzzle = function(directory=NULL,
     writeLines(lines, fileConn)
     close(fileConn)
   }
-
+  
   file.ext = function(x) {
     ext=regmatches(x, regexec("\\.([^\\.]+$)",x))[[1]][2]
     if (is.na(ext)) ext=""
     return(ext)
   }
-
+  
   file.name = function(x) {
     name=regmatches(x, regexec("(.*)\\.[^\\.]+$",x))[[1]][2]
     if (is.na(name)) name=x
@@ -195,7 +198,7 @@ puzzle = function(directory=NULL,
   }
   
   if (is.null(directory)) directory="" 
-
+  
   if (is.null(pk$data)) {
     pk$data=list()
     if (tolower(file.ext(pk$name))=="csv") {
@@ -210,15 +213,15 @@ puzzle = function(directory=NULL,
   } else {
     pk$sheetnames=names(pk$data)
   }
-
+  
   if (is.null(dose$data)) {
     dose$data=utils::read.csv(file=file.path(directory,dose$name), na.strings=missingvalues)
   }
-
+  
   if (is.null(cov$data)) {
     if (!is.null(cov$name) && nchar(cov$name)>0 && file.exists(file.path(directory,cov$name))) cov$data=utils::read.csv(file=file.path(directory,cov$name), na.strings=missingvalues)
   }
-
+  
   if (is.null(pd$data)) {
     if (!is.null(pd$name) && nchar(pd$name)>0 && file.exists(file.path(directory,pd$name))) {
       pd$data=list()
@@ -235,7 +238,7 @@ puzzle = function(directory=NULL,
   } else {
     pd$sheetnames=names(pd$data)
   }
-
+  
   if (is.null(extratimes$data)) {
     if (!is.null(extratimes$name) && nchar(extratimes$name)>0 && file.exists(file.path(directory,extratimes$name))) {
       extratimes$data=list()
@@ -251,17 +254,17 @@ puzzle = function(directory=NULL,
       }
     }
   }
-
+  
   dose$data=convert.datetime(dose$data)
   dose$data=compute.time(dose$data,dose$data)
   dose$data$DATASOURCE="DOSE"
-
+  
   if (!is.null(extratimes$data)) {
     EXTRATIME="EXTRATIME"
     names(extratimes$data)=tolower(names(extratimes$data))
     if ("pk" %in% names(extratimes$data)) names(extratimes$data)[names(extratimes$data)=="pk"]="pk1"
     if ("pd" %in% names(extratimes$data)) names(extratimes$data)[names(extratimes$data)=="pd"]="pd1"
-
+    
     for (i in seq_along(extratimes$data)) {
       extratimes$data[[i]]=convert.datetime(extratimes$data[[i]])
       extratimes$data[[i]]=compute.time(extratimes$data[[i]],dose$data)
@@ -270,7 +273,7 @@ puzzle = function(directory=NULL,
   } else {
     EXTRATIME=NULL
   }
-
+  
   for (i in seq_along(pk$data)) {
     pk$data[[i]]=convert.datetime(pk$data[[i]])
     pk$data[[i]]=compute.time(pk$data[[i]],dose$data)
@@ -281,7 +284,7 @@ puzzle = function(directory=NULL,
     pk$data[[i]]$DV=as.numeric(pk$data[[i]]$DV)
     pk$data[[i]]$DATASOURCE="PK"
   }
-
+  
   if (!is.null(cov$data)) {
     if (!"TIME" %in% names(cov$data)) cov$data$TIME=NA
     if (!"VARIABLE" %in% names(cov$data)) cov$data=plyr::rename(reshape2::melt(cov$data,id.vars=c("ID","TIME",optionalcolumns)[c("ID","TIME",optionalcolumns) %in% names(cov$data)]),c("variable"="VARIABLE","value"="VALUE"))
@@ -290,7 +293,7 @@ puzzle = function(directory=NULL,
     cov$data=compute.time(cov$data,dose$data)
     cov$data$DATASOURCE="COV"
   }
-
+  
   if (!is.null(pd$data)) {
     for (i in seq_along(pd$data)) {
       pd$data[[i]]=convert.datetime(pd$data[[i]])
@@ -303,8 +306,8 @@ puzzle = function(directory=NULL,
       pd$data[[i]]$DATASOURCE="PD"
     }
   }
-
-
+  
+  
   RATE=if ("RATE" %in% names(dose$data)) "RATE" else NULL
   ADDL=if ("ADDL" %in% names(dose$data)) "ADDL" else NULL
   II=if ("II" %in% names(dose$data)) "II" else NULL
@@ -314,7 +317,7 @@ puzzle = function(directory=NULL,
   COVS=if (!is.null(cov$data)) as.character(sort(unique(cov$data$VARIABLE))) else NULL
   TYPE=if (!is.null(pd$data)) "TYPE" else NULL
   C=if (!is.null(ignore)) ignore else NULL
-
+  
   dose$data$TYPE=0
   for (i in seq_along(pk$data)) {
     pk$data[[i]]$TYPE=1
@@ -326,20 +329,20 @@ puzzle = function(directory=NULL,
       pd$data[[i]]$CMT=length(pk$data)+i
     }
   }
-
+  
   nm$data=if (!is.null(pd$data)) rbinddiff(do.call(rbinddiff,pk$data),do.call(rbinddiff,pd$data)) else do.call(rbinddiff,pk$data)
-
+  
   uids=unique(nm$data$ID)
   dose$data=subset(dose$data,ID %in% uids)
   if (!is.null(cov$data)) cov$data=subset(cov$data,ID %in% uids)
-
+  
   nm$data$LDV=ifelse(nm$data$DV>0,log(nm$data$DV),NA)
-
+  
   if (!"EVID" %in% names(nm$data)) nm$data$EVID=0
   if (!"MDV" %in% names(nm$data)) nm$data$MDV=ifelse(!is.na(nm$data$DV),0,1)
   if (!"EVID" %in% names(dose$data)) dose$data$EVID=1
   if (!"MDV" %in% names(dose$data)) dose$data$MDV=1
-
+  
   if (length(order)==1 && order==0) {
     dose$data$CMT=1
   } else if (length(order)==1 && order==1) {
@@ -359,19 +362,19 @@ puzzle = function(directory=NULL,
     dose$data=reshape::expand.grid.df(dose$data,data.frame(CMT=c(1,2)))
     nm$data$CMT=nm$data$CMT+2
   }
-
+  
   nm$sheetnames=c(pk$sheetnames,pd$sheetnames)
   nm$cmts=unique(nm$data$CMT)
   lvl=data.frame(utils::tail(nm$cmts,length(nm$sheetnames)),nm$sheetnames)
   message((paste0("Automatic coercion to numeric for CMT\n",
                   paste(paste(lvl[,1],lvl[,2],sep="="),collapse="\n"))))
   if (!is.null(coercion$name)) coercion$data=data.frame(VAR="CMT",stats::setNames(lvl,c("NUM","CHAR")))
-
+  
   nm$data=rbinddiff(nm$data,dose$data)
-
+  
   if (nchar(arrange)>0) eval(parse(text=paste0("nm$data=dplyr::arrange(nm$data,",arrange,")")))
   nm$data$SORTINDEX=1:nrow(nm$data)
-
+  
   if (!is.null(BLQ) & !is.null(LLOQ)) {
     DV0="DV0"
     LDV0="LDV0"
@@ -382,23 +385,23 @@ puzzle = function(directory=NULL,
     DVLLOQ="DVLLOQ"
     LDVLLOQ="LDVLLOQ"
     MDVLLOQ="MDVLLOQ"
-
+    
     nm$data=dplyr::arrange(plyr::ddply(nm$data,~ID,plyr::mutate,
-                          BLQ0=as.logical(BLQ) & DATASOURCE!="DOSE",
-                          DV0=ifelse(BLQ0,0,DV),
-                          BLQ1=seq_len(length(BLQ0))<which(!BLQ0 & DATASOURCE!="DOSE")[1] & DATASOURCE!="DOSE",
-                          DV1=ifelse(BLQ1,0,DV),
-                          BLQLLOQ=BLQ0 & !is.na(LLOQ),
-                          DVLLOQ=ifelse(BLQLLOQ,LLOQ/2,DV),
-                          SORTINDEX=SORTINDEX),SORTINDEX)
-
+                                       BLQ0=as.logical(BLQ) & DATASOURCE!="DOSE",
+                                       DV0=ifelse(BLQ0,0,DV),
+                                       BLQ1=seq_len(length(BLQ0))<which(!BLQ0 & DATASOURCE!="DOSE")[1] & DATASOURCE!="DOSE",
+                                       DV1=ifelse(BLQ1,0,DV),
+                                       BLQLLOQ=BLQ0 & !is.na(LLOQ),
+                                       DVLLOQ=ifelse(BLQLLOQ,LLOQ/2,DV),
+                                       SORTINDEX=SORTINDEX),SORTINDEX)
+    
     nm$data$LDV0=ifelse(nm$data$DV0>0,log(nm$data$DV0),NA)
     nm$data$MDV0=ifelse(is.na(nm$data$DV0),1,0)
     nm$data$LDV1=ifelse(nm$data$DV1>0,log(nm$data$DV1),NA)
     nm$data$MDV1=ifelse(is.na(nm$data$DV1),1,0)
     nm$data$LDVLLOQ=ifelse(nm$data$DVLLOQ>0,log(nm$data$DVLLOQ),NA)
     nm$data$MDVLLOQ=ifelse(is.na(nm$data$DVLLOQ),1,0)
-
+    
     dose$data$MDV0=1
     dose$data$MDV1=1
     dose$data$MDVLLOQ=1
@@ -413,26 +416,26 @@ puzzle = function(directory=NULL,
     LDVLLOQ=NULL
     MDVLLOQ=NULL
   }
-
+  
   nm$data$DOSETIME[!is.na(nm$data$AMT)]=nm$data$TIME[!is.na(nm$data$AMT)]
   nm$data$DOSETIME=repeat.before.id(nm$data[,c("ID","DOSETIME")])
   nm$data$TAD=nm$data$TIME-nm$data$DOSETIME
-
+  
   nm$data=dplyr::arrange(plyr::ddply(nm$data,~ID,plyr::mutate,PDOSETIME=c(NA,utils::head(DOSETIME,-1)),SORTINDEX=SORTINDEX),SORTINDEX)
   nm$data$PDOSETIME[nm$data$EVID==4]=NA
   nm$data$PDOSETIME[is.na(nm$data$PDOSETIME)]=nm$data$DOSETIME[is.na(nm$data$PDOSETIME)]
-
+  
   if (any(nm$data$TIME<0,na.rm=T)) {
     TIME0="TIME0"
     TIME1="TIME1"
-
+    
     nm$data$TIME0=ifelse(nm$data$TIME<0,0,nm$data$TIME)
     nm$data=dplyr::arrange(plyr::ddply(nm$data,~ID,plyr::mutate,TIME1=TIME-TIME[1],SORTINDEX=SORTINDEX),SORTINDEX)
   } else {
     TIME0=NULL
     TIME1=NULL
   }
-
+  
   for (id in unique(nm$data$ID)) {
     idx=nm$data$ID==id & !is.na(nm$data$AMT) & nm$data$CMT==1
     nm$data$NUMDOSE[idx]=1:sum(idx)
@@ -443,17 +446,17 @@ puzzle = function(directory=NULL,
   } else {
     NUMDOSE=NULL
   }
-
+  
   for (column in fillcolumns) {
     nm$data[,column]=repeat.before.id(nm$data[,c("ID",column)])
   }
-
+  
   if (!is.null(cov$data)) {
     sqlcovcolumns=paste0("SQL_",covcolumns)
     cov$data[,sqlcovcolumns]=sapply(cov$data[,covcolumns],as.character)
     cov$data[,sqlcovcolumns][is.na(cov$data[,paste0("SQL_",covcolumns)])]="%"
     nm$data[,sqlcovcolumns]=sapply(nm$data[,covcolumns],as.character)
-
+    
     nmdata=nm$data 
     for (variable in unique(cov$data$VARIABLE)) {
       if (verbose) cat(paste0(variable," ",nrow(nmdata), " -> "))
@@ -464,8 +467,8 @@ puzzle = function(directory=NULL,
       } else {
         nmdata[,sqlcovcolumns[covcolumns!="TIME"]][is.na(nmdata[,sqlcovcolumns[covcolumns!="TIME"]])]="NA"
         nmdata=sqldf::sqldf(paste0("SELECT * FROM nmdata LEFT JOIN covdata ON ",
-                            paste(paste0("(nmdata.", sqlcovcolumns[covcolumns!="TIME"], " LIKE covdata.", sqlcovcolumns[covcolumns!="TIME"], ")"),collapse=" AND "),
-                            " AND (nmdata.SQL_TIME LIKE covdata.SQL_TIME OR nmdata.TIME = (select min(TIME) from nmdata where (nmdata.SQL_ID == covdata.SQL_ID and TIME >= covdata.TIME)))"))
+                                   paste(paste0("(nmdata.", sqlcovcolumns[covcolumns!="TIME"], " LIKE covdata.", sqlcovcolumns[covcolumns!="TIME"], ")"),collapse=" AND "),
+                                   " AND (nmdata.SQL_TIME LIKE covdata.SQL_TIME OR nmdata.TIME = (select min(TIME) from nmdata where (nmdata.SQL_ID == covdata.SQL_ID and TIME >= covdata.TIME)))"))
       }
       if (verbose) cat(paste0(nrow(nmdata)," -> "))
       nmdata=nmdata[!duplicated(nmdata$SORTINDEX,fromLast=T),]
@@ -474,37 +477,40 @@ puzzle = function(directory=NULL,
       if (verbose) cat(paste0(nrow(nmdata),"\n"))
     }
     nm$data=nmdata
-
+    
   }
-
+  
   if (!is.null(C) && !C %in% names(nm$data)) nm$data[,C]=""
-
+  
   nm$data=nm$data[,c(C,"ID","TIME",TIME0,TIME1,"TAD","DOSETIME","PDOSETIME",EXTRATIME,NUMDOSE,"AMT",RATE,ADDL,II,SS,TYPE,"CMT","EVID","DV","LDV","MDV",DV0,LDV0,MDV0,DV1,LDV1,MDV1,DVLLOQ,LDVLLOQ,MDVLLOQ,BLQ,LLOQ,optionalcolumns,COVS)]
-
+  
   if(parallel==F & order==c(0,1)){
     nm$data[,"RATE"] = ifelse(nm$data[,"RATE"]==-2,"F",nm$data[,"RATE"])
     nm$data[,"RATE"] = ifelse(nm$data[,"RATE"]==0,-2,nm$data[,"RATE"])
     nm$data[,"RATE"] = ifelse(nm$data[,"RATE"]=="F",0,nm$data[,"RATE"])
     nm$data = dplyr::filter(nm$data,is.na(RATE) | RATE!=0)
   }
-
+  
   if(parallel==F & order!=c(0,1)){
     stop("Would you like to use a sequential zero + first order absorption model? Please set order=c(0,1). Otherwise, please set parallel = T")
   }
-
+  
   namestoconvert=names(nm$data)[!(names(nm$data) %in% c("C",nocoercioncolumns)) & sapply(nm$data,class) %in% c("character","logical")]
   nm$data[,namestoconvert]=convert.to.numeric(nm$data[,namestoconvert,drop=F],initialindex,na.strings)
   if (!is.null(coercion$name)) write.coercion.comments(coercion$data, file=file.path(directory,coercion$name))
-message("Assembling time: ",lubridate::now())
-message("Time zone: ", Sys.timezone())
-message("Number of individuals: ", length(unique(nm$data$ID)))
-df_test = as.data.frame(nm$data)
-df_obs = df_test %>% filter(MDV==0) 
-message("Number of observations: ", nrow(df_obs))
-df_doses = df_test %>% filter(!is.na(AMT), !duplicated(AMT)) 
-doses = as.vector(df_doses$AMT)
-message("Dose levels: ", paste(shQuote(doses), collapse=", "))
-if (!is.null(nm$name)) {
+  message("Assembling time: ",lubridate::now())
+  message("Time zone: ", Sys.timezone())
+  message("Number of individuals: ", length(unique(nm$data$ID)))
+  df_test = as.data.frame(nm$data)
+  df_obs = df_test %>% filter(MDV==0) 
+  message("Number of observations: ", nrow(df_obs))
+  df_doses = df_test %>% filter(!is.na(AMT), !duplicated(AMT)) 
+  doses = as.vector(df_doses$AMT)
+  message("Dose levels: ", paste(shQuote(doses), collapse=", "))
+  if(!is.null(username)){
+    message("This data set was assembled by ", paste(username))
+  }
+  if (!is.null(nm$name)) {
     utils::write.csv(nm$data, file=file.path(directory,nm$name),row.names=F,quote=F,na=missingvalues)
   } else {
     return(nm$data)
