@@ -13,7 +13,7 @@ puzzle(directory = NULL, order, coercion = list(name = NULL, sep =
   na.strings = "N/A", arrange = "ID,TIME,CMT,desc(EVID)",
   datetimeformat = "\%Y-\%m-\%d \%H:\%M:\%S", timeunits = "hours",
   timezone = Sys.timezone(), ignore = "C", missingvalues = ".",
-  parallel = T, verbose = F)
+  parallel = T, verbose = F, username = NULL)
 }
 \arguments{
 \item{directory}{path to your directory}
@@ -61,6 +61,8 @@ puzzle(directory = NULL, order, coercion = list(name = NULL, sep =
 \item{parallel}{define parallel zero + first order absorption}
 
 \item{verbose}{define verbose}
+
+\item{username}{define person performing the assembling}
 }
 \value{
 a pharmacometrics ready data set

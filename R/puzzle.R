@@ -28,6 +28,8 @@
 #' @param verbose define verbose
 #' @param parallel define parallel zero + first order absorption
 #' @param username define person performing the assembling
+#' 
+#' @importFrom magrittr %>%
 #'
 #' @return a pharmacometrics ready data set
 #' @export
@@ -502,7 +504,7 @@ puzzle = function(directory=NULL,
   message("Time zone: ", Sys.timezone())
   message("Number of individuals: ", length(unique(nm$data$ID)))
   df_test = as.data.frame(nm$data)
-  df_obs = df_test %>% filter(MDV==0) 
+  df_obs = df_test %>%  dplyr::filter(MDV==0) 
   message("Number of observations: ", nrow(df_obs))
   df_doses = df_test %>% filter(!is.na(AMT), !duplicated(AMT)) 
   doses = as.vector(df_doses$AMT)
@@ -516,3 +518,4 @@ puzzle = function(directory=NULL,
     return(nm$data)
   }
 }
+
