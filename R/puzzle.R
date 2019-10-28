@@ -503,7 +503,7 @@ puzzle = function(directory=NULL,
   df_test = as.data.frame(nm$data)
   df_obs = dplyr::filter(df_test,MDV==0) 
   message("Number of observations: ", nrow(df_obs))
-  df_doses = filter(df_test, !is.na(AMT), !duplicated(AMT)) 
+  df_doses = dplyr::filter(df_test, !is.na(AMT), !duplicated(AMT)) 
   doses = as.vector(df_doses$AMT)
   message("Dose levels: ", paste(shQuote(doses), collapse=", "))
   if(!is.null(username)){
