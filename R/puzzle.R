@@ -497,14 +497,14 @@ puzzle = function(directory=NULL,
   namestoconvert=names(nm$data)[!(names(nm$data) %in% c("C",nocoercioncolumns)) & sapply(nm$data,class) %in% c("character","logical")]
   nm$data[,namestoconvert]=convert.to.numeric(nm$data[,namestoconvert,drop=F],initialindex,na.strings)
   if (!is.null(coercion$name)) write.coercion.comments(coercion$data, file=file.path(directory,coercion$name))
-  message("Assembling time: ",lubridate::now())
+  message("Assembling date and time: ",lubridate::now())
   message("Time zone: ", Sys.timezone())
   message("Number of individuals: ", length(unique(nm$data$ID)))
   df_test = as.data.frame(nm$data)
   df_obs = dplyr::filter(df_test,MDV==0) 
   message("Number of observations: ", nrow(df_obs))
-  df_doses = dplyr::filter(df_test, !is.na(AMT), !duplicated(AMT)) 
-  doses = as.vector(df_doses$AMT)
+  df_doses = dplyr::filter(df_test, EVID==1) 
+  doses = sort(as.vector(unique(df_doses$AMT)))
   message("Dose levels: ", paste(shQuote(doses), collapse=", "))
   if(!is.null(username)){
     message("This data set was assembled by ", paste(username))
