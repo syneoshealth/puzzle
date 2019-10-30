@@ -43,7 +43,7 @@ df = puzzle(directory=file.path(getwd()),
 #> Automatic coercion to numeric for SEX
 #> 0=F
 #> 1=M
-#> Assembling date and time: 2019-10-30 21:45:48
+#> Assembling date and time: 2019-10-30 21:46:58
 #> Time zone: Europe/Paris
 #> Number of individuals: 2
 #> Number of observations: 12
