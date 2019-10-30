@@ -36,17 +36,19 @@ df = puzzle(directory=file.path(getwd()),
         order=c(0),
         pk=list(data=nm$pk),
         dose=list(data=nm$dose),
-        cov=list(data=nm$cov))
+        cov=list(data=nm$cov),
+        username = "Mario Gonzalez Sales")
 #> Automatic coercion to numeric for CMT
 #> 1=parent
 #> Automatic coercion to numeric for SEX
 #> 0=F
 #> 1=M
-#> Assembling date and time: 2019-10-30 20:24:22
+#> Assembling date and time: 2019-10-30 21:45:48
 #> Time zone: Europe/Paris
 #> Number of individuals: 2
 #> Number of observations: 12
 #> Dose levels: "100", "200"
+#> This data set was assembled by Mario Gonzalez Sales
 ```
 
 A portion of the pharmacometrics ready data set obtained with the code showed above is presented below:
