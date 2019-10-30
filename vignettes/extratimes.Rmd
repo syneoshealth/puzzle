@@ -1,0 +1,62 @@
+---
+title: "Assembling a data set adding extratimes"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{extratimes}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+## Load puzzle
+```{r , echo=F,warning=F, message=F, error=F}
+library(tidyverse)
+```
+
+```{r setup}
+library(puzzle)
+```
+
+## Puzzle input
+```{r, warning=F, message=T, error=F, results='asis', echo=T}
+nm = list(pk = list(parent=as.data.frame(puzzle::df_pk_start)),
+          dose = as.data.frame(puzzle::df_dose_start),
+          cov = as.data.frame(puzzle::df_cov_start))
+extra_times = as.data.frame(puzzle::df_extra_times)
+readr::write_csv(extra_times,"extra_times.csv")
+```
+
+## Puzzle code
+```{r, warning=F, message=T, error=F, results='hide', echo=T}
+puzzle(directory=file.path(getwd()),
+       order=c(1),
+       pk=list(data=nm$pk), 
+       dose=list(data=nm$dose), 
+       cov=list(data=nm$cov),
+       extratimes=list(name="extra_times.csv"),
+       username="Mario Gonzalez Sales")
+```
+
+## Puzzle output
+```{r, warning=F, message=F, error=F, results='asis', echo=FALSE}
+library(knitr)
+library(kableExtra)
+library(tidyverse)
+df = puzzle(directory=file.path(getwd()),
+       order=c(1),
+       pk=list(data=nm$pk), 
+       dose=list(data=nm$dose), 
+       cov=list(data=nm$cov),
+       extratimes=list(name="extra_times.csv")) %>% 
+  mutate_if(is.numeric, round, digits=1)
+df %>%
+  #dplyr::select(1:4,8:15) %>% 
+  kable() %>%
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive"))
+```

@@ -16,6 +16,12 @@ You can install the released version of puzzle from [CRAN](https://CRAN.R-projec
 install.packages("puzzle")
 ```
 
+or download the development version from Github:
+
+``` r
+devtools::install_github("syneoshealth/puzzle")
+```
+
 Example
 -------
 
@@ -36,6 +42,11 @@ df = puzzle(directory=file.path(getwd()),
 #> Automatic coercion to numeric for SEX
 #> 0=F
 #> 1=M
+#> Assembling date and time: 2019-10-30 20:24:22
+#> Time zone: Europe/Paris
+#> Number of individuals: 2
+#> Number of observations: 12
+#> Dose levels: "100", "200"
 ```
 
 A portion of the pharmacometrics ready data set obtained with the code showed above is presented below:

@@ -1,5 +1,16 @@
 pandoc: 1.19.2.1
 pkgdown: 1.4.1
 pkgdown_sha: ~
-articles: []
+articles:
+  bolus: bolus.html
+  complex: complex.html
+  datetime: datetime.html
+  extratimes: extratimes.html
+  oral: oral.html
+  parallel01: parallel01.html
+  pkmpdm: pkmpdm.html
+  pkpd: pkpd.html
+  pm: pm.html
+  sequential01: sequential01.html
+  tdcov: tdcov.html
 

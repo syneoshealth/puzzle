@@ -1,0 +1,55 @@
+---
+title: "Assembling a data set for parallel zero and first order absorption"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{parallel01}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+## Load puzzle
+```{r setup}
+library(puzzle)
+```
+
+## Puzzle input
+```{r, warning=F, message=T, error=F, results='asis', echo=T}
+nm = list(pk = list(parent=as.data.frame(puzzle::df_pk_start)),
+          dose=as.data.frame(puzzle::df_dose_start),
+          cov=as.data.frame(puzzle::df_cov_start))
+```
+
+## Puzzle code
+```{r, warning=F, message=T, error=F, results='hide', echo=T}
+puzzle(directory=file.path(getwd()),
+       order=c(0,1),
+       pk=list(data=nm$pk), 
+       dose=list(data=nm$dose), 
+       cov=list(data=nm$cov),
+       username = "Mario Gonzalez Sales")
+```
+
+## Puzzle output
+```{r, warning=F, message=F, error=F, results='asis', echo=FALSE}
+library(knitr)
+library(kableExtra)
+library(tidyverse)
+df = puzzle(directory=file.path(getwd()),
+             order=c(0,1),
+             pk=list(data=nm$pk), 
+             dose=list(data=nm$dose), 
+             cov=list(data=nm$cov)) %>% 
+  mutate_if(is.numeric, round, digits=1)
+df[is.na(df)] <- "."
+df %>%
+  #dplyr::select(1:4,8:15) %>% 
+  kable() %>%
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive"))
+```
