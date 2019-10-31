@@ -21,7 +21,8 @@ Imports:
     sqldf,
     kableExtra,
     plyr,
-    dplyr
+    dplyr,
+    tidyverse
 Suggests:
     rmarkdown,
     knitr,
