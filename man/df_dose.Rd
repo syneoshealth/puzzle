@@ -7,7 +7,7 @@
 \format{A data frame with 12 rows and 3 variables:
 \describe{
   \item{ID}{Individual}
-  \item{TIME}{Time, in hours}
+  \item{TIME}{Time, in weeks}
   \item{AMT}{Dose, in mg}
 }}
 \usage{

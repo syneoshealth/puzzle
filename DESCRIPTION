@@ -19,6 +19,7 @@ Imports:
     reshape,
     reshape2,
     sqldf,
+    kableExtra,
     plyr,
     dplyr
 Suggests:
@@ -30,3 +31,4 @@ RoxygenNote: 6.1.1
 URL: https://github.com/syneoshealth/puzzle
 BugReports: https://github.com/syneoshealth/puzzle/issues
 VignetteBuilder: knitr
+

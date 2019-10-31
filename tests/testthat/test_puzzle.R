@@ -12,4 +12,3 @@ expect_equal(ncol(df),15)
 })
 
 
-devtools::test()

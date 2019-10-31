@@ -37,18 +37,15 @@ puzzle(directory=file.path(getwd()),
 
 ## Puzzle output
 ```{r, warning=F, message=F, error=F, results='asis', echo=FALSE}
-library(knitr)
-library(kableExtra)
 library(tidyverse)
 df = puzzle(directory=file.path(getwd()),
              order=c(0),
              pk=list(data=nm$pk), 
              dose=list(data=nm$dose), 
              cov=list(data=nm$cov)) %>% 
-  mutate_if(is.numeric, round, digits=1)
+  dplyr::mutate_if(is.numeric, round, digits=1)
 df %>%
-  #dplyr::select(1:4,8:15) %>% 
-  kable() %>%
-  kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive"))
+  knitr::kable() %>%
+  kableExtra::kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive"))
 ```
 
