@@ -24,7 +24,8 @@ Imports:
 Suggests:
     rmarkdown,
     knitr,
-    devtools
+    devtools,
+    testthat
 RoxygenNote: 6.1.1
 URL: https://github.com/syneoshealth/puzzle
 BugReports: https://github.com/syneoshealth/puzzle/issues
