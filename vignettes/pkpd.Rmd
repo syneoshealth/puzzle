@@ -34,8 +34,7 @@ puzzle(directory=file.path(getwd()),
        pk=list(data=nm$pk), 
        pd=list(data=nm$pd), 
        dose=list(data=nm$dose), 
-       cov=list(data=nm$cov),
-       username = "Mario Gonzalez Sales")
+       cov=list(data=nm$cov))
 ```
 
 ## Puzzle output

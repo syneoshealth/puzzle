@@ -31,8 +31,7 @@ puzzle(directory=file.path(getwd()),
        order=c(1),
        pk=list(data=nm$pk), 
        dose=list(data=nm$dose), 
-       datetimeformat="%Y-%m-%d %H:%M",
-       username = "Mario Gonzalez Sales")
+       datetimeformat="%Y-%m-%d %H:%M")
 ```
 
 ## Puzzle output
