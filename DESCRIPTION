@@ -1,7 +1,7 @@
 Package: puzzle
 Type: Package
 Title: Assembling Pharmacometrics Data Sets
-Version: 2.0.0
+Version: 2.1.0
 Authors@R: c(
     person(c("Olivier"), "Barriere", role = "aut"),
     person(c("Mario"), "Gonzalez Sales", role = c("aut", "cre"), email = "mario.gonzalezsales@syneoshealth.com")
@@ -33,4 +33,3 @@ RoxygenNote: 6.1.1
 URL: https://github.com/syneoshealth/puzzle
 BugReports: https://github.com/syneoshealth/puzzle/issues
 VignetteBuilder: knitr
-
