@@ -6,7 +6,7 @@ Authors@R: c(
     person(c("Olivier"), "Barriere", role = "aut"),
     person(c("Mario"), "Gonzalez Sales", role = c("aut", "cre"), email = "mario@modelinggreatsolutions.com")
     )
-Maintainer: Mario Gonzalez Sales <mario.gonzalezsales@syneoshealth.com>
+Maintainer: Mario Gonzalez Sales <mario@modelinggreatsolutions.com>
 Description: Assembling Pharmacometrics ready data sets from tabulated files.
 License: GPL-3
 Encoding: UTF-8
