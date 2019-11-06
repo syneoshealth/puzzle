@@ -1,6 +1,6 @@
 Package: puzzle
 Type: Package
-Title: Assembling Data Sets For Modeling In R
+Title: Assembling Data Sets for Modeling in R
 Version: 0.0.1
 Authors@R: c(
     person(c("Olivier"), "Barriere", role = "aut"),
