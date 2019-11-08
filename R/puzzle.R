@@ -30,6 +30,16 @@
 #' @param username define person performing the assembling
 #' 
 #' @return a pharmacometrics ready data set
+#' @example 
+#' nm = list(pk = list(parent=as.data.frame(puzzle::df_pk_start)),
+#' dose=as.data.frame(puzzle::df_dose_start),
+#' cov=as.data.frame(puzzle::df_cov_start))
+#' puzzle::puzzle(directory=file.path(getwd()),
+#'                order=c(0),
+#'                pk=list(data=nm$pk),
+#'                dose=list(data=nm$dose),
+#'                cov=list(data=nm$cov))
+#' 
 #' @export
 #' 
 #'
@@ -54,7 +64,7 @@ puzzle = function(directory=NULL,
                   timezone=Sys.timezone(),
                   ignore="C",
                   missingvalues=".",
-                  parallel=T,
+                  parallel=TRUE,
                   verbose=F,
                   username=NULL
 ) {
@@ -148,7 +158,7 @@ puzzle = function(directory=NULL,
     for (name in names(df)) {
       if (class(df[,name])!="character") df[,name]=as.character(df[,name])
       df[,name][df[,name] %in% na.strings]=NA
-      if (all(!(ifelse(is.na(df[,name]), NA, TRUE) & suppressWarnings(is.na(as.numeric(df[,name])))), na.rm=T)) {
+      if (all(!(ifelse(is.na(df[,name]), NA, TRUE) & suppressWarnings(is.na(as.numeric(df[,name])))), na.rm=TRUE)) {
         df[,name]=as.numeric(df[,name])
       } else {
         df[,name]=as.factor(df[,name])
@@ -414,7 +424,7 @@ puzzle = function(directory=NULL,
   nm$data$PDOSETIME[nm$data$EVID==4]=NA
   nm$data$PDOSETIME[is.na(nm$data$PDOSETIME)]=nm$data$DOSETIME[is.na(nm$data$PDOSETIME)]
   
-  if (any(nm$data$TIME<0,na.rm=T)) {
+  if (any(nm$data$TIME<0,na.rm=TRUE)) {
     TIME0="TIME0"
     TIME1="TIME1"
     
@@ -429,7 +439,7 @@ puzzle = function(directory=NULL,
     idx=nm$data$ID==id & !is.na(nm$data$AMT) & nm$data$CMT==1
     nm$data$NUMDOSE[idx]=1:sum(idx)
   }
-  if (max(nm$data$NUMDOSE, na.rm=T)>1) {
+  if (max(nm$data$NUMDOSE, na.rm=TRUE)>1) {
     NUMDOSE="NUMDOSE"
     nm$data$NUMDOSE=repeat.before.id(nm$data[,c("ID","NUMDOSE")])
   } else {
@@ -460,7 +470,7 @@ puzzle = function(directory=NULL,
                                    " AND (nmdata.SQL_TIME LIKE covdata.SQL_TIME OR nmdata.TIME = (select min(TIME) from nmdata where (nmdata.SQL_ID == covdata.SQL_ID and TIME >= covdata.TIME)))"))
       }
       if (verbose) cat(paste0(nrow(nmdata)," -> "))
-      nmdata=nmdata[!duplicated(nmdata$SORTINDEX,fromLast=T),]
+      nmdata=nmdata[!duplicated(nmdata$SORTINDEX,fromLast=TRUE),]
       if (!variable %in% norepeatcolumns) nmdata[,variable]=repeat.before.id(nmdata[,c("ID",variable)])
       nmdata=nmdata[,!duplicated(names(nmdata))]
       if (verbose) cat(paste0(nrow(nmdata),"\n"))

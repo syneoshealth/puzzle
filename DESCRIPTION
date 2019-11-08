@@ -1,13 +1,13 @@
 Package: puzzle
 Type: Package
-Title: Assembling Data Sets for Modeling in R
+Title: Assembling Data Sets for Non Linear Mixed Effects Modeling
 Version: 0.0.1
 Authors@R: c(
     person(c("Olivier"), "Barriere", role = "aut"),
     person(c("Mario"), "Gonzalez Sales", role = c("aut", "cre"), email = "mario@modelinggreatsolutions.com")
     )
 Maintainer: Mario Gonzalez Sales <mario@modelinggreatsolutions.com>
-Description: Assembling data sets from tabulated files to perform non-linear mixed effects modeling.
+Description: Simplifying and facilitating the time consuming and error prone task of assembling complex data sets  for non linear mixed effects modeling. Users are able to select from different absorption processes such as zero- and first-order, or a combination of both. Furthermore, data sets containing data from one or more analytes, and/or one or more responses, and/or time dependent and/or independent covariates, and/or urine data can be simultaneously assembled. 
 License: GPL-3
 Encoding: UTF-8
 LazyData: true
