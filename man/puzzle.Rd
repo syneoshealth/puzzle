@@ -13,7 +13,7 @@ puzzle(directory = NULL, order, coercion = list(name = NULL, sep =
   na.strings = "N/A", arrange = "ID,TIME,CMT,desc(EVID)",
   datetimeformat = "\%Y-\%m-\%d \%H:\%M:\%S", timeunits = "hours",
   timezone = Sys.timezone(), ignore = "C", missingvalues = ".",
-  parallel = TRUE, verbose = F, username = NULL)
+  parallel = TRUE, verbose = FALSE, username = NULL)
 }
 \arguments{
 \item{directory}{path to your directory}

@@ -65,7 +65,7 @@ puzzle = function(directory=NULL,
                   ignore="C",
                   missingvalues=".",
                   parallel=TRUE,
-                  verbose=F,
+                  verbose=FALSE,
                   username=NULL
 ) {
   
@@ -483,19 +483,19 @@ puzzle = function(directory=NULL,
   
   nm$data=nm$data[,c(C,"ID","TIME",TIME0,TIME1,"TAD","DOSETIME","PDOSETIME",EXTRATIME,NUMDOSE,"AMT",RATE,ADDL,II,SS,TYPE,"CMT","EVID","DV","LDV","MDV",DV0,LDV0,MDV0,DV1,LDV1,MDV1,DVLLOQ,LDVLLOQ,MDVLLOQ,BLQ,LLOQ,optionalcolumns,COVS)]
   
-  if(parallel==F & order==c(0,1)){
+  if(parallel==FALSE & order==c(0,1)){
     nm$data[,"RATE"] = ifelse(nm$data[,"RATE"]==-2,"F",nm$data[,"RATE"])
     nm$data[,"RATE"] = ifelse(nm$data[,"RATE"]==0,-2,nm$data[,"RATE"])
     nm$data[,"RATE"] = ifelse(nm$data[,"RATE"]=="F",0,nm$data[,"RATE"])
     nm$data = dplyr::filter(nm$data,is.na(RATE) | RATE!=0)
   }
   
-  if(parallel==F & order!=c(0,1)){
+  if(parallel==FALSE & order!=c(0,1)){
     stop("Would you like to use a sequential zero + first order absorption model? Please set order=c(0,1). Otherwise, please set parallel = T")
   }
   
   namestoconvert=names(nm$data)[!(names(nm$data) %in% c("C",nocoercioncolumns)) & sapply(nm$data,class) %in% c("character","logical")]
-  nm$data[,namestoconvert]=convert.to.numeric(nm$data[,namestoconvert,drop=F],initialindex,na.strings)
+  nm$data[,namestoconvert]=convert.to.numeric(nm$data[,namestoconvert,drop=FALSE],initialindex,na.strings)
   if (!is.null(coercion$name)) write.coercion.comments(coercion$data, file=file.path(directory,coercion$name))
   message("Assembling date and time: ",lubridate::now())
   message("Time zone: ", Sys.timezone())
@@ -510,7 +510,7 @@ puzzle = function(directory=NULL,
     message("This data set was assembled by ", paste(username))
   }
   if (!is.null(nm$name)) {
-    utils::write.csv(nm$data, file=file.path(directory,nm$name),row.names=F,quote=F,na=missingvalues)
+    utils::write.csv(nm$data, file=file.path(directory,nm$name),row.names=FALSE,quote=FALSE,na=missingvalues)
   } else {
     return(nm$data)
   }
