@@ -71,6 +71,7 @@ a pharmacometrics ready data set
 Build pharmacometric data sets from basic tabulated files
 }
 \examples{
+\dontrun{
 nm = list(pk = list(parent=as.data.frame(puzzle::df_pk_start)),
           dose=as.data.frame(puzzle::df_dose_start), 
           cov=as.data.frame(puzzle::df_cov_start))
@@ -79,5 +80,5 @@ puzzle(directory=file.path(getwd()),
        pk=list(data=nm$pk), 
        dose=list(data=nm$dose), 
        cov=list(data=nm$cov))
-
+}
 }
