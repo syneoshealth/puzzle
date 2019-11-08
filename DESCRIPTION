@@ -7,7 +7,7 @@ Authors@R: c(
     person(c("Mario"), "Gonzalez Sales", role = c("aut", "cre"), email = "mario@modelinggreatsolutions.com")
     )
 Maintainer: Mario Gonzalez Sales <mario@modelinggreatsolutions.com>
-Description: To Simplify and facilite the time consuming and error prone task of assembling complex data sets for non-linear mixed effects modeling. Users are able to select from different absorption processes such as zero and first order, or a combination of both. Furthermore, data sets containing data from several analytes, responses, and covariates can be simultaneously assembled. 
+Description: To Simplify the time consuming and error prone task of assembling complex data sets for non-linear mixed effects modeling. Users are able to select from different absorption processes such as zero and first order, or a combination of both. Furthermore, data sets containing data from several entities, responses, and covariates can be simultaneously assembled. 
 License: GPL-3
 Encoding: UTF-8
 LazyData: true
