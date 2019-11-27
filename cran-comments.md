@@ -11,10 +11,8 @@
 
 What has been changed?
 
-Redundant 'in R' has been removed from the title.
+Our package does not reference academic publications yet.
 
-The Description field has been modified as suggested.
-
-TRUE and FALSE have been used instead of T and F in in puzzle.R
-
-Executable examples has been added to Rd-files.
+It has been ensured that the functions do not write by default or in your
+examples/vignettes/tests in the user's home filespace (including the
+package directory and getwd()). 
